@@ -1,0 +1,46 @@
+def sonatypeUsername = ext.sonatypeUsername
+def sonatypePassword = ext.sonatypePassword
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2') {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+
+            snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+
+            pom.project {
+                name 'NightShade'
+                packaging 'jar'
+                description 'Event-driven Game Framework'
+                url 'https://www.github.com/floralvikings/nightshade'
+
+                scm {
+                    url 'scm:git@github.com:floralvikings/nightshade.git'
+                    connection 'scm:git@github.com:floralvikings/nightshade.git'
+                    developerConnection 'scm:git@github.com:floralvikings/nightshade.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The MIT License (MIT)'
+                        url 'https://raw.githubusercontent.com/floralvikings/nightshade/master/LICENSE'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'floralvikings'
+                        name 'Caleb Brinkman'
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,9 @@
+language: java
+jdk:
+- oraclejdk7
+before_install:
+- openssl aes-256-cbc -K $encrypted_46bc03a455ec_key -iv $encrypted_46bc03a455ec_iv -in deploy.tar.enc -out deploy.tar -d
+- tar xvf deploy.tar
+after_success:
+- ./gradlew jacocoTestReport coveralls
+- '[[ $TRAVIS_BRANCH == "master" && $TRAVIS_PULL_REQUEST == "false" ]] && { ./gradlew uploadArchives; }'
